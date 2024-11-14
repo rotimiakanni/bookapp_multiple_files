@@ -15,11 +15,15 @@ class BookCrud:
 
     @staticmethod
     def get_book(book_id: int):
-        book: Optional[Book]= None
+        book: Optional[Book] = None
         for current_book in books:
             if current_book.id == book_id:
                 book = current_book
                 break
+            else:
+                raise HTTPException(
+                    status_code=404, detail="Book not found"
+                )
         return book
 
     @staticmethod
