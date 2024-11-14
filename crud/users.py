@@ -18,6 +18,10 @@ class UserCrud:
             if current_user.id == user_id:
                 user = current_user
                 break
+            else:
+                raise HTTPException(
+                    status_code=404, detail="User not found"
+                )
         return user
 
     @staticmethod

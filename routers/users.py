@@ -9,6 +9,9 @@ from crud.users import user_crud
 
 user_router = APIRouter()
 
+@user_router.get("/{user_id}")
+def get_user(user_id: int):
+    return {"message": "success", "data": user_crud.get_user(user_id)}
 
 @user_router.get("/")
 def get_users():
