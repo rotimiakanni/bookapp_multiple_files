@@ -1,26 +1,32 @@
+from typing import Optional
 from fastapi import APIRouter
 from schemas.books import (
     Book,
     BookCreate,
     BookUpdate
 )
+from crud.books import book_crud
 
 book_router = APIRouter()
-
-books = [
-    Book(id=1, name="Book 1", author="Author 1", isbn="1234567890"),
-    Book(id=2, name="Book 2", author="Author 2", isbn="9876543210"),
-    Book(id=3, name="Book 3", author="Author 3", isbn="0123456789"),
-]
 
 
 @book_router.get("/")
 def get_books():
-    return {"message": "success", "data": books}
+    return {"message": "success", "data": book_crud.get_books()}
 
 
 @book_router.post("/")
 def create_book(payload: BookCreate):
-    book = Book(**payload.model_dump(), id=len(books) + 1)
-    books.append(book)
-    return {"message": "success", "data": book}
+    new_book = book_crud.create_book(payload)
+    return {"message": "success", "data": new_book}
+
+@book_router.put("/{user_id}")
+def update_book(user_id: int, payload:BookUpdate):
+    user : Optional[Book] = book_crud.get_book(user_id)
+    update_book = book_crud.update_book(user, payload)
+    return {"message": "success", "data": update_book}
+
+@book_router.delete("/{user_id}")
+def delete_book(user_id :int):
+    deleted_book = book_crud.delete_book(user_id)
+    return {"message": "sucess", "data": deleted_book}
