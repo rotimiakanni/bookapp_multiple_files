@@ -50,6 +50,4 @@ class Bookcrud:
         return {"message": "Book deleted"}
 
 
-
-
 book_crud = Bookcrud()
