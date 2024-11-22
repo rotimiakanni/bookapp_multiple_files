@@ -12,16 +12,19 @@ users = [
 
 class UserCrud:
     @staticmethod
-    def get_user(user_id):
-        user: Optional[User] = None
-        for current_user in users:
-            if current_user.id == user_id:
-                user = current_user
-                break
-            else:
-                raise HTTPException(
-                    status_code=404, detail="User not found"
-                )
+    def get_user(value: str) -> User:
+        if not value:
+            raise HTTPException(status_code=400, detail="Value cannot be empty")
+        if value.isnumeric():#because all the ids are numeric
+            value = int(value)
+            user = next((user for user in users if user.id == value), None)
+            if not user:
+                raise HTTPException(status_code=404, detail=f"User with id {value} not found")
+        else:#must be searching my username
+            value = value.strip().casefold()
+            user = next((user for user in users if user.username.casefold() == value), None)
+            if not user:
+                raise HTTPException(status_code=404, detail=f"User with username '{value.title()}' not found")
         return user
 
     @staticmethod
@@ -46,8 +49,8 @@ class UserCrud:
         return user
 
     @staticmethod
-    def delete_user(user_id: int):
-        user = UserCrud.get_user(user_id)
+    def delete_user(value: str):
+        user = UserCrud.get_user(value)
         if not user:
             raise HTTPException(
                 status_code=404, detail="User not found"
