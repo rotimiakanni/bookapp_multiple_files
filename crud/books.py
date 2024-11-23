@@ -20,10 +20,12 @@ class BookCrud:
             if current_book.id == book_id:
                 book = current_book
                 break
-            else:
+        if book == None:
                 raise HTTPException(
                     status_code=404, detail="Book not found"
                 )
+            # else:
+            #     book = current_book
         return book
 
     @staticmethod
