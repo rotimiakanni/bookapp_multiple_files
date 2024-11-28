@@ -11,7 +11,6 @@ app = FastAPI()
 
 app.include_router(book_router, prefix='/books', tags=["Books"])
 app.include_router(user_router, prefix='/users', tags=["Users"])
-from crud.books import books
 
 
 @app.get("/")

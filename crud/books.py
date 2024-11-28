@@ -14,19 +14,16 @@ class BookCrud:
         return books
 
     @staticmethod
-    def get_book(value: str) -> Book:
-        if not value:
-            raise HTTPException(status_code=400, detail="Value cannot be empty")
-        if value.isnumeric():  # user must be searching by id since its an integer
-            value = int(value)
-            book = next((book for book in books if book.id == value), None)
-            if not book:
-                raise HTTPException(status_code=404, detail=f"Book with id {value} not found")
-        else:  # otherwise user must be searching by book name
-            value = value.strip().casefold()
-            book = next((book for book in books if book.name.casefold() == value), None)
-            if not book:
-                raise HTTPException(status_code=404, detail=f"Book with name '{value.title()}' not found")
+    def get_book(book_id: int):
+        book: Optional[Book] = None
+        for current_book in books:
+            if current_book.id == book_id:
+                book = current_book
+                break
+            else:
+                raise HTTPException(
+                    status_code=404, detail="Book not found"
+                )
         return book
 
     @staticmethod
@@ -47,8 +44,8 @@ class BookCrud:
         return book
 
     @staticmethod
-    def delete_book(value: str):
-        book = BookCrud.get_book(value)
+    def delete_book(book_id: int):
+        book = BookCrud.get_book(book_id)
         if not book:
             raise HTTPException(
                 status_code=404, detail="Book not found"
