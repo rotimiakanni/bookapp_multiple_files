@@ -18,7 +18,7 @@ def get_users():
     return {"message": "success", "data": user_crud.get_users()}
 
 
-@user_router.post("/")
+@user_router.post("/", status_code= 201)
 def create_user(payload: UserCreate):
     new_user = user_crud.create_user(payload)
     return {"message": "success", "data": new_user}
@@ -31,6 +31,6 @@ def update_user(user_id: int, payload: UserUpdate):
     return {"message": "success", "data": updated_user}
 
 
-@user_router.delete("/{user_id}")
+@user_router.delete("/{user_id}", status_code=204)
 def delete_user(user_id: int):
     return user_crud.delete_user(user_id)

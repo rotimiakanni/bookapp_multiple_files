@@ -13,15 +13,9 @@ users = [
 class UserCrud:
     @staticmethod
     def get_user(user_id):
-        user: Optional[User] = None
-        for current_user in users:
-            if current_user.id == user_id:
-                user = current_user
-                break
-            else:
-                raise HTTPException(
-                    status_code=404, detail="User not found"
-                )
+        user = next((user for user in users if user.id == user_id), None)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
         return user
 
     @staticmethod
@@ -48,12 +42,9 @@ class UserCrud:
     @staticmethod
     def delete_user(user_id: int):
         user = UserCrud.get_user(user_id)
-        if not user:
-            raise HTTPException(
-                status_code=404, detail="User not found"
-            )
         users.remove(user)
         return {"message": "User deleted"}
+
 
 
 user_crud = UserCrud()
