@@ -73,6 +73,7 @@ def test_update_book():
 
 @patch("crud.books.books", mock_books)
 def test_delete_book():
+    """test deleting an existing book"""
     response=client.delete("/books/1")
     assert response.status_code == 204
 
