@@ -18,7 +18,7 @@ def get_book(book_id: int):
 def get_books():
     return {"message": "success", "data": book_crud.get_books()}
 
-@book_router.post("/")
+@book_router.post("/", status_code=201)
 def create_book(payload: BookCreate):
     new_book = book_crud.create_book(payload)
     return {"message": "success", "data": new_book}
@@ -29,6 +29,6 @@ def update_book(book_id: int, payload: BookUpdate):
     updated_book = book_crud.update_book(book, payload)
     return {"message": "success", "data": updated_book}
 
-@book_router.delete("/{book_id}")
+@book_router.delete("/{book_id}", status_code=204)
 def delete_book(book_id: int):
     return book_crud.delete_book(book_id)

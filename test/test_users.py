@@ -37,7 +37,7 @@ def test_get_user_not_found():
 
 @patch("crud.users.users", mock_users)
 def test_create_user():
-    """test creating a with valid data"""
+    """test creating a user with valid data"""
     data={
         "username": "new_guy",
         "email": "new@example.com",
